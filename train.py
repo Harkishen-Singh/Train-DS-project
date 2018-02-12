@@ -1,5 +1,6 @@
 import csv
 import random
+from openpyxl import Workbook
 
 '''csv_file = open('./datasets/train.csv', 'r')
 reader = csv.reader(csv_file)
@@ -8,8 +9,14 @@ for row in reader:
 
 class train:
     def __init__(self):
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.ws.title = "Record_of_training"
+
         self.csv_file = open('./datasets/train.csv', 'r')
         self.reader = csv.reader(self.csv_file)
+
+        self.survival_final = 0 # head of all variables
 
         self.id = []
         self.survived = []
@@ -41,7 +48,7 @@ class train:
             self.fare.append(i[9])
             self.cabin.append(i[10])
             self.embarked.append(i[11])
-
+        self.count = len(self.id)
 
 
     def assigningValues(self):
@@ -50,7 +57,145 @@ class train:
         print(len(self.id))
         '''for i in range(1, len(self.id)):
             print(self.id[i] + ' ' + self.survived[i] + ' ' + self.pclass[i] + ' ' + self.name[i])'''
-        
+
+    def calculating_influence(self):
+        self.male_class = [3]
+        self.male_class_influence = [3]
+        self.male_class_count = [3]
+        self.male_class_count[0] = 0
+        self.male_class_count[1] = 0
+        self.male_class_count[2] = 0
+
+        self.female_class = [3]
+        self.female_class_influence = [3]
+        self.female_class_count = [3]
+        self.female_class_count[0] = 0
+        self.female_class_count[1] = 0
+        self.female_class_count[2] = 0
+
+        #independent of gender
+        self.cabin_count = 0
+        self.cabin_count_alpha = [6] #  A, B, C, D ,E ,F
+        self.cabin_alpha_influence = [6]
+        self.cabin_count_alpha_survived = [6]
+
+        for i in range(0,6):
+            self.cabin_alpha_influence[i] = 0
+        for i in range(0,6):
+            self.cabin_count_alpha[i] = 0
+        for i in range(0,6):
+            self.cabin_count_alpha_survived[i] = 0
+
+
+
+
+        for i in range(1, self.count):
+            if self.sex[i]=='male' :
+
+                # male code below
+
+                # below is ML of class vs survivial
+
+                if self.pclass[i] == '1':
+                     if self.survived[i] == '1' :
+                        self.male_class[0] = self.male_class[0] + 1
+                     self.male_class_count[0] = self.male_class_count[0] + 1
+
+                if self.pclass[i] == '2':
+                     if self.survived[i] == '1':
+                        self.male_class[1] = self.male_class[1] + 1
+                     self.male_class_count[1] = self.male_class_count[1] + 1
+
+                if self.pclass[i] == '3':
+                     if self.survived[i] == '1':
+                        self.male_class[2] = self.male_class[2] + 1
+                     self.male_class_count[2] = self.male_class_count[2] + 1
+
+                # saving the probability of survival in case of men, class wise
+                ''' write this code after the loop of i ends
+                self.male_class_influence[0] = self.male_class[0] / self.male_class_count[0] # class 1
+                self.male_class_influence[1] = self.male_class[1] / self.male_class_count[1] # class 2
+                self.male_class_influence[2] = self.male_class[2] / self.male_class_count[2] # class 3
+                '''
+
+            if self.sex[i]=='female' :
+
+                # female code below
+
+                # below is ML of class vs survivial
+
+                if self.pclass[i] == '1':
+                     if self.survived[i] == '1' :
+                        self.female_class[0] = self.female_class[0] + 1
+                     self.female_class_count[0] = self.female_class_count[0] + 1
+
+                if self.pclass[i] == '2':
+                     if self.survived[i] == '1':
+                        self.female_class[1] = self.female_class[1] + 1
+                     self.female_class_count[1] = self.female_class_count[1] + 1
+
+                if self.pclass[i] == '3':
+                     if self.survived[i] == '1':
+                        self.female_class[2] = self.female_class[2] + 1
+                     self.female_class_count[2] = self.female_class_count[2] + 1
+
+                # saving the probability of survival in case of men, class wise
+
+                self.female_class_influence[0] = self.female_class[0] / self.female_class_count[0] # class 1
+                self.female_class_influence[1] = self.female_class[1] / self.female_class_count[1] # class 2
+                self.female_class_influence[2] = self.female_class[2] / self.female_class_count[2] # class 3
+
+                # influence means the probability of survival based on class
+
+            # cabin probability
+            if self.cabin == '' :
+                a=0 # just as a null statement, ignore it
+            else:
+                self.cabin_count = self.cabin_count + 1
+
+                if self.cabin[0:1] == 'A' :
+                    self.cabin_count_alpha[0] = self.cabin_count_alpha[0] + 1
+                    if self.survived == '1':
+                        self.cabin_count_alpha_survived[0] = self.cabin_count_alpha_survived[0] + 1
+
+                if self.cabin[0:1] == 'B' :
+                    self.cabin_count_alpha[1] = self.cabin_count_alpha[1] + 1
+                    if self.survived == '1':
+                        self.cabin_count_alpha_survived[1] = self.cabin_count_alpha_survived[1] + 1
+
+                if self.cabin[0:1] == 'C' :
+                    self.cabin_count_alpha[2] = self.cabin_count_alpha[2] + 1
+                    if self.survived == '1':
+                        self.cabin_count_alpha_survived[2] = self.cabin_count_alpha_survived[2] + 1
+
+                if self.cabin[0:1] == 'D' :
+                    self.cabin_count_alpha[3] = self.cabin_count_alpha[3] + 1
+                    if self.survived == '1':
+                        self.cabin_count_alpha_survived[3] = self.cabin_count_alpha_survived[3] + 1
+
+                if self.cabin[0:1] == 'E' :
+                    self.cabin_count_alpha[4] = self.cabin_count_alpha[4] + 1
+                    if self.survived == '1':
+                        self.cabin_count_alpha_survived[4] = self.cabin_count_alpha_survived[4] + 1
+
+                if self.cabin[0:1] == 'F' :
+                    self.cabin_count_alpha[5] = self.cabin_count_alpha[5] + 1
+                    if self.survived == '1':
+                        self.cabin_count_alpha_survived[5] = self.cabin_count_alpha_survived[5] + 1
+
+                '''write this code after the loop of i ends
+                self.cabin_alpha_influence[0] = self.cabin_count_alpha_survived[0] / self.cabin_count_alpha[0]
+                self.cabin_alpha_influence[1] = self.cabin_count_alpha_survived[1] / self.cabin_count_alpha[1]
+                self.cabin_alpha_influence[2] = self.cabin_count_alpha_survived[2] / self.cabin_count_alpha[2]
+                self.cabin_alpha_influence[3] = self.cabin_count_alpha_survived[3] / self.cabin_count_alpha[3]
+                self.cabin_alpha_influence[4] = self.cabin_count_alpha_survived[4] / self.cabin_count_alpha[4]
+                self.cabin_alpha_influence[5] = self.cabin_count_alpha_survived[5] / self.cabin_count_alpha[5]
+                '''
+
+
+
+
+
 
 obj = train()
 obj.assigningValues()
