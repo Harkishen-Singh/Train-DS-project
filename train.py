@@ -50,15 +50,6 @@ class train:
             self.embarked.append(i[11])
         self.count = len(self.id)
 
-
-    def assigningValues(self):
-        print('got in')
-
-        print(len(self.id))
-        '''for i in range(1, len(self.id)):
-            print(self.id[i] + ' ' + self.survived[i] + ' ' + self.pclass[i] + ' ' + self.name[i])'''
-
-    def calculating_influence(self):
         self.male_class = [3]
         self.male_class_influence = [3]
         self.male_class_count = [3]
@@ -73,11 +64,35 @@ class train:
         self.female_class_count[1] = 0
         self.female_class_count[2] = 0
 
-        #independent of gender
+        # independent of gender
         self.cabin_count = 0
-        self.cabin_count_alpha = [6] #  A, B, C, D ,E ,F
+        self.cabin_count_alpha = [6]  # A, B, C, D ,E ,F
         self.cabin_alpha_influence = [6]
         self.cabin_count_alpha_survived = [6]
+
+        # variable for embarked place
+        self.embarked_place_count = [3] # S , C , Q
+        self.embarked_place_count_survived = [3]
+        self.embarked_influence = [3]
+
+
+    def assigningValues(self):
+        print('got in')
+
+        print(len(self.id))
+        '''for i in range(1, len(self.id)):
+            print(self.id[i] + ' ' + self.survived[i] + ' ' + self.pclass[i] + ' ' + self.name[i])'''
+
+    def calculating_influence(self):
+
+        # initialisation for various parameters
+
+        for i in range(0,3):
+            self.embarked_influence[i] = 0
+        for i in range(0,3):
+            self.embarked_place_count[i] = 0
+        for i in range(0,3):
+            self.embarked_place_count_survived[i] = 0
 
         for i in range(0,6):
             self.cabin_alpha_influence[i] = 0
@@ -192,9 +207,26 @@ class train:
                 self.cabin_alpha_influence[5] = self.cabin_count_alpha_survived[5] / self.cabin_count_alpha[5]
                 '''
 
+            # influence of place embarked below
 
+            if self.embarked[i] == 'S' :
+                if self.survived == '1' :
+                    self.embarked_place_count_survived[0] = self.embarked_place_count_survived[0] +1
+                self.embarked_place_count[0] = self.embarked_place_count[0] +1
+            if self.embarked[i] == 'C' :
+                if self.survived == '1' :
+                    self.embarked_place_count_survived[1] = self.embarked_place_count_survived[1] +1
+                self.embarked_place_count[1] = self.embarked_place_count[1] +1
+            if self.embarked[i] == 'Q' :
+                if self.survived == '1' :
+                    self.embarked_place_count_survived[0] = self.embarked_place_count_survived[0] +1
+                self.embarked_place_count[1] = self.embarked_place_count[1] +1
 
-
+            '''write this code after loop i completes
+            self.embarked_influence[0] = self.embarked_place_count_survived[0] / self.embarked_place_count[0] # S
+            self.embarked_influence[1] = self.embarked_place_count_survived[1] / self.embarked_place_count[1] # C
+            self.embarked_influence[2] = self.embarked_place_count_survived[2] / self.embarked_place_count[2] # Q
+            '''
 
 
 obj = train()
