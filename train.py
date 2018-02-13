@@ -83,6 +83,7 @@ class train:
             self.cabin.append(i[10])
             self.embarked.append(i[11])
         self.count = len(self.id)
+        ifile.close()
 
     def assigningValues(self):
         print('got in')
@@ -275,6 +276,10 @@ class train:
 
         self.wb.save(self.fname+'Processed.xlsm')
 
+    def file_close(self):
+        self.wb.close()
+        # ifile has already been closed in the assigning function just after it was used
+        
 
 obj = train()
 obj.assigningValues()
