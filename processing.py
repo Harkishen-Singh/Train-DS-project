@@ -1,4 +1,5 @@
 from openpyxl import load_workbook
+from openpyxl import Workbook
 import csv
 
 '''This file analyses the input file based on learnt records, learned during machine learning part exeution'''
@@ -24,6 +25,7 @@ class Processing():
 
     def input_file_storage(self):
         fname = input('.csv File name to be predicted :')
+        self.fname2= fname
         ofile = open('./datasets/'+fname+'.csv', 'r')
         self.reader = csv.reader(ofile)
         self.name = []
@@ -34,14 +36,46 @@ class Processing():
         self.embark = []
         self.cabin = []
         self.age = []
+        self.age = []
+        self.SibSp = []
+        self.parch = []
+        self.ticket = []
+        self.fare = []
+
+
+
         self.survival = []  # main head of all variables
         self.cal_sur = [] # calculating survival
+        ''' use only this while checking the probability with the output and getting correct percent of probability
+        self.survived = []
         for i in self.reader:
             self.id.append(i[0])
+
+            self.survived.append(i[1])
+
+            self.pclass.append(i[2])
+            self.name.append(i[3])
+            self.sex.append(i[4])
+            self.age.append(i[5])
+            self.cabin.append(i[10])
+            self.embark.append(i[11])
+            self.parameters.append(0)
+            self.cal_sur.append(0)
+            self.survival.append(0)
+        self.count = len(self.id)
+        self.analysis()
+        '''
+        for i in self.reader:
+            self.id.append(i[0])
+
             self.pclass.append(i[1])
             self.name.append(i[2])
             self.sex.append(i[3])
             self.age.append(i[4])
+            self.SibSp.append(i[5])
+            self.parch.append(i[6])
+            self.ticket.append(i[7])
+            self.fare.append(i[8])
             self.cabin.append(i[9])
             self.embark.append(i[10])
             self.parameters.append(0)
@@ -117,17 +151,54 @@ class Processing():
 
     def final_outcome(self):
         self.probability_survival = []
-        for i in range(0, self.count):
+
+        for i in range(0, self.count-1):
+            #print(self.parameters[i])
             self.probability_survival.append(self.cal_sur[i] / self.parameters[i])
         no =len(self.probability_survival)
-        for i in range(0, self.count):
-            if self.probability_survival > 0.5 :
+        for i in range(0, self.count-1):
+            if self.probability_survival[i] >= 0.41 :
+                ''' 0.41 probability value is achieved when the probability result is compared the original results of 
+                training using train.py, since all of almost maximum of values above 0.41 survived 
+                in the accident, hence 0.41 is taken as the bar value. '''
                 self.survival[i] = 1
             else :
                 self.survival[i] = 0
+            if self.age[i+1] >= str(50):
+                self.survival[i] = 0
+        self.exporting_to_excel_file()
 
-        for i in range(0, self.count):
-            print(ws.cell(row=i+2, column=2 ).value + ' '+ self.probability_survival[i])
+
+    def exporting_to_excel_file(self):
+        wb2 = Workbook()
+        ws2 = wb2.active
+        ws2.title = 'Predicted_Survived'
+        ws2.cell(row=1, column=1,value='Id')
+        ws2.cell(row=1, column=2, value='Predicted_Survival')
+        ws2.cell(row=1, column=3, value='Pclass')
+        ws2.cell(row=1, column=4, value='Name')
+        ws2.cell(row=1, column=5, value='Sex')
+        ws2.cell(row=1, column=6, value='Age')
+        ws2.cell(row=1, column=7, value='SibSp')
+        ws2.cell(row=1, column=8, value='Parch')
+        ws2.cell(row=1, column=9, value='Ticket')
+        ws2.cell(row=1, column=10, value='Fare')
+        ws2.cell(row=1, column=11, value='Cabin')
+        for i in range(1, self.count):
+            ws2.cell(row=i+1, column=1, value=self.id[i])
+            ws2.cell(row=i+1, column=2, value=self.survival[i-1])
+            ws2.cell(row=i+1, column=3, value=self.pclass[i])
+            ws2.cell(row=i+1, column=4, value=self.name[i])
+            ws2.cell(row=i+1, column=5, value=self.sex[i])
+            ws2.cell(row=i+1, column=6, value=self.age[i])
+            ws2.cell(row=i+1, column=7, value=self.SibSp[i])
+            ws2.cell(row=i+1, column=8, value=self.parch[i])
+            ws2.cell(row=i+1, column=9, value=self.ticket[i])
+            ws2.cell(row=i+1, column=10, value=self.fare[i])
+            ws2.cell(row=i+1, column=11, value=self.cabin[i])
+            #print(str(self.id[i]) + ' ' +str(self.survival[i-1]) + ' ' + str(self.probability_survival[i-1]))
+        wb2.save('./datasets/predicted/predicted_'+self.fname2+'.xlsm')
+        print('File successfully created with address ./datasets/predicted/predicted_'+self.fname2+'.xlsm')
 
 object = Processing()
 object.input_file_storage()
