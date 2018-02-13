@@ -54,27 +54,63 @@ class Processing():
             if self.sex[i] == 'male':
                 if self.pclass[i] == '1':
                     self.parameters[i] = self.parameters[i] +1
-                    self.cal_sur[i] = self.inf_male_class[0]
+                    self.cal_sur[i] = self.inf_male_class[0] + self.cal_sur[i]
 
                 if self.pclass[i] == '2':
                     self.parameters[i] = self.parameters[i] +1
-                    self.cal_sur[i] = self.inf_male_class[1]
+                    self.cal_sur[i] = self.inf_male_class[1]+ self.cal_sur[i]
 
                 if self.pclass[i] == '3':
                     self.parameters[i] = self.parameters[i] +1
-                    self.cal_sur[i] = self.inf_male_class[2]
+                    self.cal_sur[i] = self.inf_male_class[2]+ self.cal_sur[i]
 
             if self.sex[i] == 'female':
                 if self.pclass[i] == '1':
                     self.parameters[i] = self.parameters[i] + 1
-                    self.cal_sur[i] = self.inf_female_class[0]
+                    self.cal_sur[i] = self.inf_female_class[0]+ self.cal_sur[i]
 
                 if self.pclass[i] == '2':
                     self.parameters[i] = self.parameters[i] + 1
-                    self.cal_sur[i] = self.inf_female_class[1]
+                    self.cal_sur[i] = self.inf_female_class[1]+ self.cal_sur[i]
 
                 if self.pclass[i] == '3':
                     self.parameters[i] = self.parameters[i] + 1
-                    self.cal_sur[i] = self.inf_female_class[2]
+                    self.cal_sur[i] = self.inf_female_class[2]+ self.cal_sur[i]
+            if self.cabin[i] == '':
+                a=0
+            else:
+                if self.cabin[i][0:1] == 'A':
+                    self.parameters[i] = self.parameters[i] +1
+                    self.cal_sur[i] =  self.inf_cabin[0] + self.cal_sur[i]
 
-            
+                if self.cabin[i][0:1] == 'B':
+                    self.parameters[i] = self.parameters[i] +1
+                    self.cal_sur[i] =  self.inf_cabin[1] + self.cal_sur[i]
+                if self.cabin[i][0:1] == 'C':
+                    self.parameters[i] = self.parameters[i] +1
+                    self.cal_sur[i] =  self.inf_cabin[2] + self.cal_sur[i]
+                if self.cabin[i][0:1] == 'D':
+                    self.parameters[i] = self.parameters[i] +1
+                    self.cal_sur[i] =  self.inf_cabin[3] + self.cal_sur[i]
+                if self.cabin[i][0:1] == 'E':
+                    self.parameters[i] = self.parameters[i] +1
+                    self.cal_sur[i] =  self.inf_cabin[4] + self.cal_sur[i]
+                if self.cabin[i][0:1] == 'F':
+                    self.parameters[i] = self.parameters[i] +1
+                    self.cal_sur[i] =  self.inf_cabin[5] + self.cal_sur[i]
+
+            if self.embark[i] == 'S':
+                self.parameters[i] = self.parameters[i] +1
+                self.cal_sur[i] = self.cal_sur[i] + self.inf_embarked[0]
+            if self.embark[i] == 'C':
+                self.parameters[i] = self.parameters[i] +1
+                self.cal_sur[i] = self.cal_sur[i] + self.inf_embarked[1]
+            if self.embark[i] == 'Q':
+                self.parameters[i] = self.parameters[i] +1
+                self.cal_sur[i] = self.cal_sur[i] + self.inf_embarked[2]
+
+        # end of loop i here
+
+        
+
+
