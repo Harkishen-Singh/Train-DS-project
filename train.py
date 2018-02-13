@@ -77,6 +77,8 @@ class train:
         self.count = len(self.id)
         ifile.close()
 
+        # knowing the types
+        print(type(self.survived[1]))
 
     def assigningValues(self):
 
@@ -164,38 +166,38 @@ class train:
 
                 if self.cabin[i][0:1] == 'A' :
                     self.cabin_count_alpha[0] = self.cabin_count_alpha[0] + 1
-                    if self.survived == 1:
+                    if self.survived[i] == '1':
                         self.cabin_count_alpha_survived[0] = self.cabin_count_alpha_survived[0] + 1
                     self.cabin_used[0] = True
 
                 if self.cabin[i][0:1] == 'B' :
 
                     self.cabin_count_alpha[1] = self.cabin_count_alpha[1] + 1
-                    if self.survived[i] == 1:
+                    if self.survived[i] == '1':
                         self.cabin_count_alpha_survived[1] = self.cabin_count_alpha_survived[1] + 1
                     self.cabin_used[1] = True
 
                 if self.cabin[i][0:1] == 'C' :
                     self.cabin_count_alpha[2] = self.cabin_count_alpha[2] + 1
-                    if self.survived[i] == 1:
+                    if self.survived[i] == '1':
                         self.cabin_count_alpha_survived[2] = self.cabin_count_alpha_survived[2] + 1
                     self.cabin_used[2] = True
 
                 if self.cabin[i][0:1] == 'D' :
                     self.cabin_count_alpha[3] = self.cabin_count_alpha[3] + 1
-                    if self.survived[i] == 1:
+                    if self.survived[i] == '1':
                         self.cabin_count_alpha_survived[3] = self.cabin_count_alpha_survived[3] + 1
                     self.cabin_used[3] = True
 
                 if self.cabin[i][0:1] == 'E' :
                     self.cabin_count_alpha[4] = self.cabin_count_alpha[4] + 1
-                    if self.survived[i] == 1:
+                    if self.survived[i] == '1':
                         self.cabin_count_alpha_survived[4] = self.cabin_count_alpha_survived[4] + 1
                     self.cabin_used[4] = True
 
                 if self.cabin[i][0:1] == 'F' :
                     self.cabin_count_alpha[5] = self.cabin_count_alpha[5] + 1
-                    if self.survived[i] == 1:
+                    if self.survived[i] == '1':
                         self.cabin_count_alpha_survived[5] = self.cabin_count_alpha_survived[5] + 1
                     self.cabin_used[5] = True
 
@@ -211,16 +213,16 @@ class train:
             # influence of place embarked below
 
             if self.embarked[i] == 'S' :
-                if self.survived[i] == 1 :
+                if self.survived[i] == '1' :
                     self.embarked_place_count_survived[0] = self.embarked_place_count_survived[0] +1
                 self.embarked_place_count[0] = self.embarked_place_count[0] +1
             if self.embarked[i] == 'C' :
-                if self.survived[i] == 1 :
+                if self.survived[i] == '1' :
                     self.embarked_place_count_survived[1] = self.embarked_place_count_survived[1] +1
                 self.embarked_place_count[1] = self.embarked_place_count[1] +1
             if self.embarked[i] == 'Q' :
-                if self.survived[i] == 1 :
-                    self.embarked_place_count_survived[0] = self.embarked_place_count_survived[0] +1
+                if self.survived[i] == '1' :
+                    self.embarked_place_count_survived[2] = self.embarked_place_count_survived[2] +1
                 self.embarked_place_count[2] = self.embarked_place_count[2] +1
 
             '''write this code after loop i completes
