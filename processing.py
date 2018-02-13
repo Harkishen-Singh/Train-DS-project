@@ -24,7 +24,8 @@ class Processing():
 
     def input_file_storage(self):
         fname = input('.csv File name to be predicted :')
-        self.reader = csv.reader(fname)
+        ofile = open('./datasets/'+fname+'.csv', 'r')
+        self.reader = csv.reader(ofile)
         self.name = []
         self.id = []
         self.pclass = []        # dont forget to make survival for age > 50 as 0 in male
@@ -33,19 +34,21 @@ class Processing():
         self.embark = []
         self.cabin = []
         self.age = []
-        self.survival = 0  # main head of all variables
+        self.survival = []  # main head of all variables
         self.cal_sur = [] # calculating survival
         for i in self.reader:
             self.id.append(i[0])
-            self.name.append(i[2])
             self.pclass.append(i[1])
+            self.name.append(i[2])
             self.sex.append(i[3])
             self.age.append(i[4])
             self.cabin.append(i[9])
             self.embark.append(i[10])
             self.parameters.append(0)
             self.cal_sur.append(0)
+            self.survival.append(0)
         self.count = len(self.id)
+        self.analysis()
 
     def analysis(self):
 
@@ -110,7 +113,23 @@ class Processing():
                 self.cal_sur[i] = self.cal_sur[i] + self.inf_embarked[2]
 
         # end of loop i here
+        self.final_outcome()
 
-        
+    def final_outcome(self):
+        self.probability_survival = []
+        for i in range(0, self.count):
+            self.probability_survival.append(self.cal_sur[i] / self.parameters[i])
+        no =len(self.probability_survival)
+        for i in range(0, self.count):
+            if self.probability_survival > 0.5 :
+                self.survival[i] = 1
+            else :
+                self.survival[i] = 0
+
+        for i in range(0, self.count):
+            print(ws.cell(row=i+2, column=2 ).value + ' '+ self.probability_survival[i])
+
+object = Processing()
+object.input_file_storage()
 
 
