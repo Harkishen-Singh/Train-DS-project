@@ -24,6 +24,22 @@ class Processing():
         self.parameters = []
 
     def input_file_storage(self):
+
+        self.wb = load_workbook('./datasets/savedProcessed/trainProcessed.xlsm')
+        self.ws = self.wb['Record_of_training']
+        self.inf_male_class = [0, 0, 0]
+        self.inf_female_class = [0, 0, 0]
+        self.inf_cabin = [0, 0, 0, 0, 0, 0]
+        self.inf_embarked = [0, 0, 0]
+        for i in range(0, 3):
+            self.inf_male_class[i] = self.ws.cell(row=i + 2, column=1).value
+            self.inf_female_class[i] = self.ws.cell(row=i + 2, column=2).value
+            self.inf_embarked[i] = self.ws.cell(row=i + 2, column=4).value
+        for i in range(0, 6):
+            self.inf_cabin[i] = self.ws.cell(row=i + 2, column=3).value
+
+        self.parameters = []
+
         fname = input('.csv File name to be predicted :')
         self.fname2= fname
         ofile = open('./datasets/'+fname+'.csv', 'r')
@@ -41,7 +57,7 @@ class Processing():
         self.parch = []
         self.ticket = []
         self.fare = []
-
+        self.parameters = []
 
 
         self.survival = []  # main head of all variables
@@ -63,7 +79,7 @@ class Processing():
             self.cal_sur.append(0)
             self.survival.append(0)
         self.count = len(self.id)
-        self.analysis()
+        
         '''
         for i in self.reader:
             self.id.append(i[0])
@@ -200,7 +216,6 @@ class Processing():
         wb2.save('./datasets/predicted/predicted_'+self.fname2+'.xlsm')
         print('File successfully created with address ./datasets/predicted/predicted_'+self.fname2+'.xlsm')
 
-object = Processing()
-object.input_file_storage()
+
 
 

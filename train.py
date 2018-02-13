@@ -54,6 +54,48 @@ class train:
         self.embarked_influence = [3]
 
     def asking_values(self):
+
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.ws.title = "Record_of_training"
+
+        self.survival_final = 0  # head of all variables
+
+        self.id = []
+        self.survived = []
+        self.pclass = []
+        self.name = []
+        self.sex = []
+        self.age = []
+        self.sibsp = []
+        self.parch = []
+        self.ticket = []
+        self.fare = []
+        self.cabin = []
+        self.embarked = []
+
+        self.male_class = [3]
+        self.male_class_influence = [0, 0, 0]
+        self.male_class_count = [3]
+        self.female_class = [3]
+        self.female_class_influence = [0, 0, 0]
+        self.female_class_count = [3]
+        self.female_class = [0, 0, 0]
+        self.male_class = [0, 0, 0]
+        self.male_class_count = [0, 0, 0]
+        self.female_class_count = [0, 0, 0]
+
+        # independent of gender
+        self.cabin_count = 0
+        self.cabin_count_alpha = [6]  # A, B, C, D ,E ,F
+        self.cabin_alpha_influence = [6]
+        self.cabin_count_alpha_survived = [6]
+
+        # variable for embarked place
+        self.embarked_place_count = [3]  # S , C , Q
+        self.embarked_place_count_survived = [3]
+        self.embarked_influence = [3]
+
         self.fname = input('Enter .csv filename to train the machine : ')
         ifile = open('./datasets/'+self.fname+'.csv', 'r')
         self.reader = csv.reader(ifile)
@@ -77,8 +119,6 @@ class train:
         self.count = len(self.id)
         ifile.close()
 
-        # knowing the types
-        print(type(self.survived[1]))
 
     def assigningValues(self):
 
@@ -266,23 +306,17 @@ class train:
             self.ws.cell(row=i+1, column=1, value=self.male_class_influence[i-1])
             self.ws.cell(row=i+1, column=2, value=self.female_class_influence[i-1])
             self.ws.cell(row=i+1, column=4, value=self.embarked_influence[i-1])
-            print('embraked influence '+str(self.embarked_influence[i-1]))
-        for i in range(0,6):
-            print('cabin_count_alpha_survived ' + str(self.cabin_count_alpha_survived[i]))
+
 
         for i in range(2,8):
             self.ws.cell(row=i, column=3, value=self.cabin_alpha_influence[i-2])
-            print('cabin alpha influenec '+ str(self.cabin_alpha_influence[i-2]))
-            print('cabin count alpha '+ str(self.cabin_count_alpha[i-2]))
 
         self.wb.save('./datasets/savedProcessed/' + self.fname+'Processed.xlsm')
         self.file_close()
 
     def file_close(self):
         self.wb.close()
+        print("Record Analysised..!\nOutput saved at " + "./datasets/savedProcessed/"+self.fname+'.xlsm')
         # ifile has already been closed in the assigning function just after it was used
 
 
-obj = train()
-obj.asking_values()
-obj.assigningValues()
