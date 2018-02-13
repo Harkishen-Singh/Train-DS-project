@@ -29,12 +29,6 @@ class train:
         self.fare = []
         self.cabin = []
         self.embarked = []
-        self.no_of_rows = -1
-        '''for i in self.reader:
-            self.no_of_rows = self.no_of_rows + 1
-        '''
-        print(self.no_of_rows)
-
 
         self.male_class = [3]
         self.male_class_influence = [0,0,0]
@@ -83,14 +77,9 @@ class train:
         self.count = len(self.id)
         ifile.close()
 
-        for i in range(0, self.count):
-            print(self.cabin[i])
-            print(self.cabin[i][0:1])
 
     def assigningValues(self):
-        print('got in')
 
-        print(len(self.id))
         '''for i in range(1, len(self.id)):
             print(self.id[i] + ' ' + self.survived[i] + ' ' + self.pclass[i] + ' ' + self.name[i])'''
         self.calculating_influence()
@@ -175,39 +164,38 @@ class train:
 
                 if self.cabin[i][0:1] == 'A' :
                     self.cabin_count_alpha[0] = self.cabin_count_alpha[0] + 1
-                    if self.survived == '1':
+                    if self.survived == 1:
                         self.cabin_count_alpha_survived[0] = self.cabin_count_alpha_survived[0] + 1
                     self.cabin_used[0] = True
-
 
                 if self.cabin[i][0:1] == 'B' :
 
                     self.cabin_count_alpha[1] = self.cabin_count_alpha[1] + 1
-                    if self.survived == '1':
+                    if self.survived[i] == 1:
                         self.cabin_count_alpha_survived[1] = self.cabin_count_alpha_survived[1] + 1
                     self.cabin_used[1] = True
 
                 if self.cabin[i][0:1] == 'C' :
                     self.cabin_count_alpha[2] = self.cabin_count_alpha[2] + 1
-                    if self.survived == '1':
+                    if self.survived[i] == 1:
                         self.cabin_count_alpha_survived[2] = self.cabin_count_alpha_survived[2] + 1
                     self.cabin_used[2] = True
 
                 if self.cabin[i][0:1] == 'D' :
                     self.cabin_count_alpha[3] = self.cabin_count_alpha[3] + 1
-                    if self.survived == '1':
+                    if self.survived[i] == 1:
                         self.cabin_count_alpha_survived[3] = self.cabin_count_alpha_survived[3] + 1
                     self.cabin_used[3] = True
 
                 if self.cabin[i][0:1] == 'E' :
                     self.cabin_count_alpha[4] = self.cabin_count_alpha[4] + 1
-                    if self.survived == '1':
+                    if self.survived[i] == 1:
                         self.cabin_count_alpha_survived[4] = self.cabin_count_alpha_survived[4] + 1
                     self.cabin_used[4] = True
 
                 if self.cabin[i][0:1] == 'F' :
                     self.cabin_count_alpha[5] = self.cabin_count_alpha[5] + 1
-                    if self.survived == '1':
+                    if self.survived[i] == 1:
                         self.cabin_count_alpha_survived[5] = self.cabin_count_alpha_survived[5] + 1
                     self.cabin_used[5] = True
 
@@ -223,15 +211,15 @@ class train:
             # influence of place embarked below
 
             if self.embarked[i] == 'S' :
-                if self.survived == '1' :
+                if self.survived[i] == 1 :
                     self.embarked_place_count_survived[0] = self.embarked_place_count_survived[0] +1
                 self.embarked_place_count[0] = self.embarked_place_count[0] +1
             if self.embarked[i] == 'C' :
-                if self.survived == '1' :
+                if self.survived[i] == 1 :
                     self.embarked_place_count_survived[1] = self.embarked_place_count_survived[1] +1
                 self.embarked_place_count[1] = self.embarked_place_count[1] +1
             if self.embarked[i] == 'Q' :
-                if self.survived == '1' :
+                if self.survived[i] == 1 :
                     self.embarked_place_count_survived[0] = self.embarked_place_count_survived[0] +1
                 self.embarked_place_count[2] = self.embarked_place_count[2] +1
 
@@ -252,14 +240,14 @@ class train:
         self.female_class_influence[1] = self.female_class[1] / self.female_class_count[1]  # class 2
         self.female_class_influence[2] = self.female_class[2] / self.female_class_count[2]  # class 3
 
-        '''
+
         self.cabin_alpha_influence[0] = self.cabin_count_alpha_survived[0] / self.cabin_count_alpha[0]
         self.cabin_alpha_influence[1] = self.cabin_count_alpha_survived[1] / self.cabin_count_alpha[1]
         self.cabin_alpha_influence[2] = self.cabin_count_alpha_survived[2] / self.cabin_count_alpha[2]
         self.cabin_alpha_influence[3] = self.cabin_count_alpha_survived[3] / self.cabin_count_alpha[3]
         self.cabin_alpha_influence[4] = self.cabin_count_alpha_survived[4] / self.cabin_count_alpha[4]
         self.cabin_alpha_influence[5] = self.cabin_count_alpha_survived[5] / self.cabin_count_alpha[5]
-        '''
+
         self.embarked_influence[0] = self.embarked_place_count_survived[0] / self.embarked_place_count[0]  # S
         self.embarked_influence[1] = self.embarked_place_count_survived[1] / self.embarked_place_count[1]  # C
         self.embarked_influence[2] = self.embarked_place_count_survived[2] / self.embarked_place_count[2]  # Q
@@ -276,9 +264,14 @@ class train:
             self.ws.cell(row=i+1, column=1, value=self.male_class_influence[i-1])
             self.ws.cell(row=i+1, column=2, value=self.female_class_influence[i-1])
             self.ws.cell(row=i+1, column=4, value=self.embarked_influence[i-1])
+            print('embraked influence '+str(self.embarked_influence[i-1]))
+        for i in range(0,6):
+            print('cabin_count_alpha_survived ' + str(self.cabin_count_alpha_survived[i]))
 
-        for i in range(2,7):
+        for i in range(2,8):
             self.ws.cell(row=i, column=3, value=self.cabin_alpha_influence[i-2])
+            print('cabin alpha influenec '+ str(self.cabin_alpha_influence[i-2]))
+            print('cabin count alpha '+ str(self.cabin_count_alpha[i-2]))
 
         self.wb.save('./datasets/savedProcessed/' + self.fname+'Processed.xlsm')
         self.file_close()
